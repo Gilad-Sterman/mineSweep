@@ -148,7 +148,7 @@ function onCellClicked(elCell, i, j) {
         elCell.classList.add('wrong')
         setTimeout(wrongAns, 500, elCell)
         if (gGame.LIFE === 0) {
-            SMILEY = '🤯'
+            SMILEY = '💥'
             renderSmiley()
             alert('GAME OVER')
             showAllCells()

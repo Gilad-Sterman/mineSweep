@@ -3,13 +3,14 @@
 }
 
 body {
-    background-color: rgb(50, 126, 25);
+    background-color: rgb(64, 175, 27);
 }
 
 h1 {
     color: rgb(0, 22, 0);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .lvl {
@@ -26,31 +27,33 @@ button {
 button:hover {
     cursor: pointer;
     background-color: darkgreen;
-    /* padding: 5px; */
 }
 
 .display {
     text-align: center;
 }
 
-/* .timer {
-    text-align: center;
-} */
+.timer {
+    display: inline;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 
-/* .mines {
-    text-align: center;
-} */
+.mines {
+    display: inline;
+    margin-left: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 
 .lives {
     /* color: lightgreen;
     background-color: rgb(2, 29, 2); */
-    width: 20%;
+    width: 40%;
     margin: auto;
-    padding: 10px;
+    padding: 5px;
 }
 
 .smiley {
-    background-color: rgba(0, 128, 0, 0);
+    background-color: rgb(0, 39, 0);
     border-radius: 10%;
 }
 
@@ -64,23 +67,23 @@ button:hover {
     text-align: center;
     border: 1px solid black;
     border-radius: 10%;
-    background-color: darkgrey;
+    background-color: darkgreen;
     font-size: 1.5em;
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
 }
 
 .wrong {
-    background-color: red;
+    background-color: darkred;
 }
 
 .cell:hover {
     cursor: pointer;
-    background-color: lightgray;
+    background-color: rgb(3, 168, 3);
 }
 
 .shown {
-    background-color: white;
+    background-color: lightgreen;
     border: none;
 }
 
@@ -90,7 +93,7 @@ button:hover {
 }
 
 .wrong:hover {
-    background-color: red;
+    background-color: darkred;
 }
 
 
