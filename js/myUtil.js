@@ -1,18 +1,18 @@
 'use strict'
 
-function onEasyMode(){
+function onEasyMode() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
     onInit()
 }
 
-function onMediumMode(){
+function onMediumMode() {
     gLevel.SIZE = 8
     gLevel.MINES = 14
     onInit()
 }
 
-function onHardMode(){
+function onHardMode() {
     gLevel.SIZE = 12
     gLevel.MINES = 32
     onInit()
@@ -39,35 +39,19 @@ function findNegEmptyCells(board, i, j) {
 function getRandMineLocations() {
     const RandMineLocations = []
     for (var mineCount = 0; mineCount < gLevel.MINES; mineCount++) {
-        const max = gLevel.SIZE - 1
-        const randI = getRandomIntInclusive(0, max) 
-        const randJ = getRandomIntInclusive(0, max) 
-        const randMine = {i:randI,j:randJ}
+        const randMine = getRandCell()
         RandMineLocations.push(randMine)
     }
     return RandMineLocations
 }
 
-function getRandEmptyCell(board) {
-    var emptyCells = []
-    for (var i = 1; i < board.length - 1; i++) {
-        for (var j = 1; j < board[0].length - 1; j++) {
-            if (board[i][j] === EMPTY) {
-                var emptyCell = { i, j }
-                emptyCells.push(emptyCell)
-            }
-        }
-    }
-    // console.log(emptyCells)
-    var emptyCell = getRandCell(emptyCells)
-    // console.log(emptyCell)
-    return emptyCell
-}
 
-function getRandCell(emptyCells) {
-    var max = emptyCells.length
-    var randIdx = getRandomIntInclusive(0, max - 1)
-    return emptyCells[randIdx]
+function getRandCell() {
+    const max = gEmtyCells.length - 1
+    const randCellIdx = getRandomIntInclusive(0, max)
+    const randCell = gEmtyCells[randCellIdx]
+    gEmtyCells.splice(randCellIdx, 1)
+    return randCell
 }
 
 
@@ -75,10 +59,36 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+function buildMat() {
+    const idxArray = []
+    const mat = []
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        mat[i] = []
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            mat[i][j] = { i, j }
+            idxArray.push(mat[i][j])
+        }
+    }
+    return idxArray
+}
+
+
+function getRandEmptyCell(board) {
+    var allCells = []
+    for (var i = 0; i < board.length - 1; i++) {
+        for (var j = 0; j < board[0].length - 1; j++) {
+            var currCell = { i, j }
+            allCells.push(currCell)
+        }
+    }
+    // console.log(emptyCells)
+    var randCell = getRandCell(allCells)
+    // console.log(emptyCell)
+    return randCell
+}
 // location such as: {i: 2, j: 7}
 function renderCell(location, value) {
     // Select the elCell and set the value
     const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
     elCell.innerHTML = value
 }
-

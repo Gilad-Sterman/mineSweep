@@ -16,6 +16,7 @@ var gGame = {
 }
 
 var gFirstClicked = 0
+var gEmtyCells
 var gRandMineLocations
 
 function onInit() {
@@ -24,6 +25,7 @@ function onInit() {
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gFirstClicked = 0
+    gEmtyCells = buildMat()
     gRandMineLocations = getRandMineLocations()
     gBoard = buildBoard()
     // console.table(gBoard)
