@@ -3,6 +3,8 @@
 const MINE = '💣'
 const MARK = '🚩'
 const EMPTY = ''
+var LIFE = '💓💓💓'
+var SMILEY = '🙂'
 var gBoard
 var gLevel = {
     SIZE: 4,
@@ -31,6 +33,8 @@ function onInit() {
     gFirstClicked = 0
     gMinesLeft = gLevel.MINES
     gGame.LIFE = 3
+    SMILEY = '🙂'
+    renderSmiley()
     renderLifeCount()
     clearInterval(gTimerInterval)
     renderTimer()
@@ -143,6 +147,8 @@ function onCellClicked(elCell, i, j) {
         elCell.classList.add('wrong')
         setTimeout(wrongAns, 500, elCell)
         if (gGame.LIFE === 0) {
+            SMILEY = '🤯'
+            renderSmiley()
             alert('GAME OVER')
             showAllCells()
             clearInterval(gTimerInterval)
@@ -242,6 +248,8 @@ function checkVictory() {
     const vShownCount = gLevel.SIZE ** 2 - gLevel.MINES
     // console.log('vShownCount:',vShownCount)
     if (gGame.markedCount === vMarkedCount && gGame.shownCount === vShownCount) {
+        SMILEY = '😎'
+        renderSmiley()
         alert('YOU WIN!')
         gGame.isOn = false
         clearInterval(gTimerInterval)
@@ -261,8 +269,16 @@ function renderTimer() {
 }
 
 function renderLifeCount() {
-    const elMineCount = document.querySelector('.lives span')
-    elMineCount.innerText = gGame.LIFE
+    if(gGame.LIFE === 2) LIFE = '💓💓'
+    if(gGame.LIFE === 1) LIFE = '💓'
+    if(gGame.LIFE === 0) LIFE = ':('
+    const elLifeCount = document.querySelector('.lives')
+    elLifeCount.innerText = LIFE
+}
+
+function renderSmiley(){
+    const elSmiley = document.querySelector('.smiley')
+    elSmiley.innerText = SMILEY
 }
 
 function wrongAns(elCell) {
