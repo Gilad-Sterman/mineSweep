@@ -3,7 +3,7 @@
 const MINE = '💣'
 const MARK = '🚩'
 const EMPTY = ''
-var LIFE = '💓💓💓'
+var LIFE = '❤️❤️❤️'
 var SMILEY = '🙂'
 var gBoard
 var gLevel = {
@@ -33,6 +33,7 @@ function onInit() {
     gFirstClicked = 0
     gMinesLeft = gLevel.MINES
     gGame.LIFE = 3
+    LIFE = '❤️❤️❤️'
     SMILEY = '🙂'
     renderSmiley()
     renderLifeCount()
@@ -269,8 +270,8 @@ function renderTimer() {
 }
 
 function renderLifeCount() {
-    if(gGame.LIFE === 2) LIFE = '💓💓'
-    if(gGame.LIFE === 1) LIFE = '💓'
+    if(gGame.LIFE === 2) LIFE = '❤️❤️'
+    if(gGame.LIFE === 1) LIFE = '❤️'
     if(gGame.LIFE === 0) LIFE = ':('
     const elLifeCount = document.querySelector('.lives')
     elLifeCount.innerText = LIFE
