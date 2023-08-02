@@ -8,11 +8,13 @@ var gLevel = {
     SIZE: 4,
     MINES: 2
 }
+
 var gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    secsPassed: 0
+    secsPassed: 0,
+    LIFE: 3
 }
 
 var gFirstClicked = 0
@@ -28,12 +30,15 @@ function onInit() {
     gGame.secsPassed = 0
     gFirstClicked = 0
     gMinesLeft = gLevel.MINES
+    gGame.LIFE = 3
+    renderLifeCount()
     clearInterval(gTimerInterval)
     renderTimer()
     renderMineCount()
     gEmtyCells = buildMat()
-    gRandMineLocations = getRandMineLocations()
-    gBoard = buildBoard()
+    // gRandMineLocations = getRandMineLocations()
+    // gBoard = buildBoard()
+    buildBoard()
     // console.table(gBoard)
     renderBoard(gBoard)
     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -52,12 +57,15 @@ function buildBoard() {
             }
         }
     }
-    placeMines(gRandMineLocations, board)
+    if (gFirstClicked !== 0) {
+        placeMines(gRandMineLocations, board)
+        setMinesNegsCount(board)
+    }
     // board[1][1].isMine = true
     // board[2][3].isMine = true
     // board[0][0].isShown = true
-    setMinesNegsCount(board)
-    return board
+    gBoard = board
+    // return board
 }
 
 function renderBoard(board) {
@@ -116,13 +124,29 @@ function onCellClicked(elCell, i, j) {
     if (gFirstClicked === 0) {
         gFirstClicked = { i, j }
         gTimerInterval = setInterval(renderTimer, 1000)
+        elCell.classList.add('shown')
+        gGame.shownCount++
+        const firstIdx = gFirstClicked.i * gLevel.SIZE + gFirstClicked.j
+        gEmtyCells.splice(firstIdx, 1)
+        gRandMineLocations = getRandMineLocations()
+        // placeMines(gRandMineLocations, gBoard)
+        buildBoard()
+        gBoard[i][j].isShown = true
+        renderBoard(gBoard)
+        // checkVictory()
     }
     if (gBoard[i][j].isMarked) return
     if (gBoard[i][j].isShown) return
     if (gBoard[i][j].isMine) {
-        console.log('GAME OVER')
-        showAllCells()
-        clearInterval(gTimerInterval)
+        gGame.LIFE--
+        renderLifeCount()
+        elCell.classList.add('wrong')
+        setTimeout(wrongAns, 500, elCell)
+        if (gGame.LIFE === 0) {
+            alert('GAME OVER')
+            showAllCells()
+            clearInterval(gTimerInterval)
+        }
         return
     }
     elCell.classList.add('shown')
@@ -234,4 +258,13 @@ function renderTimer() {
     const elMineCount = document.querySelector('.timer span')
     elMineCount.innerText = gGame.secsPassed
     gGame.secsPassed++
+}
+
+function renderLifeCount() {
+    const elMineCount = document.querySelector('.lives span')
+    elMineCount.innerText = gGame.LIFE
+}
+
+function wrongAns(elCell) {
+    elCell.classList.remove('wrong')
 }
