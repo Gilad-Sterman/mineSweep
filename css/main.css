@@ -26,11 +26,20 @@ button:hover {
     cursor: pointer;
 }
 
+.timer {
+    text-align: center;
+}
+
+.mines {
+    text-align: center;
+}
+
 .board-container {
     margin: auto;
 }
 
 .cell {
+    text-align: center;
     border: 1px solid black;
     border-radius: 10%;
     background-color: darkgrey;
@@ -39,12 +48,12 @@ button:hover {
     height: 2em;
 }
 
-.cell:hover{
+.cell:hover {
     cursor: pointer;
     background-color: lightgray;
 }
 
-.shown{
+.shown {
     background-color: white;
     border: none;
 }

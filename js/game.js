@@ -18,6 +18,8 @@ var gGame = {
 var gFirstClicked = 0
 var gEmtyCells
 var gRandMineLocations
+var gMinesLeft
+var gTimerInterval
 
 function onInit() {
     gGame.isOn = true
@@ -25,6 +27,10 @@ function onInit() {
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gFirstClicked = 0
+    gMinesLeft = gLevel.MINES
+    clearInterval(gTimerInterval)
+    renderTimer()
+    renderMineCount()
     gEmtyCells = buildMat()
     gRandMineLocations = getRandMineLocations()
     gBoard = buildBoard()
@@ -46,7 +52,7 @@ function buildBoard() {
             }
         }
     }
-    placeMines(gRandMineLocations,board)
+    placeMines(gRandMineLocations, board)
     // board[1][1].isMine = true
     // board[2][3].isMine = true
     // board[0][0].isShown = true
@@ -107,12 +113,16 @@ function renderBoard(board) {
 
 function onCellClicked(elCell, i, j) {
     if (!gGame.isOn) return
-    if (gFirstClicked === 0) gFirstClicked = { i, j }
+    if (gFirstClicked === 0) {
+        gFirstClicked = { i, j }
+        gTimerInterval = setInterval(renderTimer, 1000)
+    }
     if (gBoard[i][j].isMarked) return
     if (gBoard[i][j].isShown) return
     if (gBoard[i][j].isMine) {
         console.log('GAME OVER')
         showAllCells()
+        clearInterval(gTimerInterval)
         return
     }
     elCell.classList.add('shown')
@@ -135,12 +145,16 @@ function onCellMarked(elCell, i, j) {
         elCell.innerText = EMPTY
         // console.log('unmark')
         gGame.markedCount--
+        gMinesLeft++
+        renderMineCount()
         // checkVictory()
     } else {
         gBoard[i][j].isMarked = true
         elCell.innerText = MARK
         // console.log('mark')
         gGame.markedCount++
+        gMinesLeft--
+        renderMineCount()
         checkVictory()
     }
 }
@@ -190,7 +204,7 @@ function expandShown(board, i, j) {
     // renderBoard(board)
 }
 
-function placeMines(RandMineLocations,board) {
+function placeMines(RandMineLocations, board) {
     for (var idx = 0; idx < RandMineLocations.length; idx++) {
         const currMineLocation = RandMineLocations[idx]
         const currMine = board[currMineLocation.i][currMineLocation.j]
@@ -206,6 +220,18 @@ function checkVictory() {
     if (gGame.markedCount === vMarkedCount && gGame.shownCount === vShownCount) {
         alert('YOU WIN!')
         gGame.isOn = false
+        clearInterval(gTimerInterval)
     }
 }
 
+
+function renderMineCount() {
+    const elMineCount = document.querySelector('.mines span')
+    elMineCount.innerText = gMinesLeft
+}
+
+function renderTimer() {
+    const elMineCount = document.querySelector('.timer span')
+    elMineCount.innerText = gGame.secsPassed
+    gGame.secsPassed++
+}
