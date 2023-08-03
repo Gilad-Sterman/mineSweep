@@ -96,33 +96,6 @@ function renderBoard(board) {
     elContainer.innerHTML = strHTML
 }
 
-// function renderCinema() {
-//     var strHTML = ''
-//     for (var i = 0; i < gCinema.length; i++) {
-//         strHTML += `<tr class="cinema-row" >\n`
-//         for (var j = 0; j < gCinema[0].length; j++) {
-//             const cell = gCinema[i][j]
-//             // For cell of type SEAT add seat class:
-//             var className = (cell.isSeat) ? 'seat' : ''
-//             if (cell.isBooked) {
-//                 className += ' booked'
-//             }
-//             // Add a seat title:
-//             const title = `Seat: ${i + 1}, ${j + 1}`
-
-//             // TODO: for cell that is booked add booked class
-
-//             strHTML += `\t<td data-i="${i}" data-j="${j}" title="${title}" class="cell ${className}"
-//                             onclick="onCellClicked(this, ${i}, ${j})" >
-//                          </td>\n`
-//         }
-//         strHTML += `</tr>\n`
-//     }
-//     // console.log(strHTML)
-
-//     const elSeats = document.querySelector('.cinema-seats')
-//     elSeats.innerHTML = strHTML
-// }
 
 function onCellClicked(elCell, i, j) {
     if (!gGame.isOn) return
@@ -137,6 +110,7 @@ function onCellClicked(elCell, i, j) {
         // placeMines(gRandMineLocations, gBoard)
         buildBoard()
         gBoard[i][j].isShown = true
+        expandShown(gBoard, i, j)
         renderBoard(gBoard)
         // checkVictory()
     }
@@ -227,10 +201,14 @@ function getCellMinesNegsCount(i, j, board) {
 function expandShown(board, i, j) {
     const emptyCells = findNegEmptyCells(board, i, j)
     const extraShownCount = emptyCells.length
-    gGame.shownCount += extraShownCount
+    // gGame.shownCount += extraShownCount
     for (var idx = 0; idx < emptyCells.length; idx++) {
         const emptyCell = emptyCells[idx]
         board[emptyCell.i][emptyCell.j].isShown = true
+        // gGame.shownCount += extraShownCount
+        if (board[emptyCell.i][emptyCell.j].minesAround === 0) {
+            expandShown(board, emptyCell.i, emptyCell.j)
+        }
     }
     // renderBoard(board)
 }
@@ -243,12 +221,23 @@ function placeMines(RandMineLocations, board) {
     }
 }
 
+function countShown() {
+    var count = 0
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isShown) count++
+        }
+    }
+    return count
+}
+
 
 function checkVictory() {
     const vMarkedCount = gLevel.MINES
     const vShownCount = gLevel.SIZE ** 2 - gLevel.MINES
+    const shownCount = countShown()
     // console.log('vShownCount:',vShownCount)
-    if (gGame.markedCount === vMarkedCount && gGame.shownCount === vShownCount) {
+    if (gGame.markedCount === vMarkedCount && shownCount === vShownCount) {
         SMILEY = '😎'
         renderSmiley()
         alert('YOU WIN!')
@@ -270,14 +259,14 @@ function renderTimer() {
 }
 
 function renderLifeCount() {
-    if(gGame.LIFE === 2) LIFE = '❤️❤️'
-    if(gGame.LIFE === 1) LIFE = '❤️'
-    if(gGame.LIFE === 0) LIFE = ':('
+    if (gGame.LIFE === 2) LIFE = '❤️❤️'
+    if (gGame.LIFE === 1) LIFE = '❤️'
+    if (gGame.LIFE === 0) LIFE = ':('
     const elLifeCount = document.querySelector('.lives')
     elLifeCount.innerText = LIFE
 }
 
-function renderSmiley(){
+function renderSmiley() {
     const elSmiley = document.querySelector('.smiley')
     elSmiley.innerText = SMILEY
 }

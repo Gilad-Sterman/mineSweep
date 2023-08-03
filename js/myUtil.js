@@ -1,5 +1,6 @@
 'use strict'
 
+
 function onEasyMode() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
@@ -70,6 +71,16 @@ function buildMat() {
         }
     }
     return idxArray
+}
+
+function onDarkMode() {
+    const elBody = document.querySelector('body')
+    elBody.classList.toggle('dark')
+    const elHeader = document.querySelector('h1')
+    elHeader.style.color = (elHeader.style.color === 'white') ? 'black' : 'white'
+    const elDM = document.querySelector('.DM')
+    const MODE = (elDM.innerText === '🔮') ? '🔦' : '🔮'
+    elDM.innerText = MODE
 }
 
 
