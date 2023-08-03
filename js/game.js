@@ -5,6 +5,7 @@ const MARK = '🚩'
 const EMPTY = ''
 var LIFE = '❤️❤️❤️'
 var SMILEY = '🙂'
+var gSafeClickCount
 var gBoard
 var gLevel = {
     SIZE: 4,
@@ -35,6 +36,8 @@ function onInit() {
     gGame.LIFE = 3
     LIFE = '❤️❤️❤️'
     SMILEY = '🙂'
+    gSafeClickCount = 3
+    onSafeClick()
     renderSmiley()
     renderLifeCount()
     clearInterval(gTimerInterval)

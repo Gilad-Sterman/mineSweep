@@ -56,9 +56,9 @@ function getRandCell() {
 }
 
 
-function getRandomIntInclusive(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-}
+// function getRandomIntInclusive(min, max) {
+//     return Math.floor(Math.random() * (max - min + 1)) + min
+// }
 
 function buildMat() {
     const idxArray = []
@@ -83,6 +83,38 @@ function onDarkMode() {
     elDM.innerText = MODE
 }
 
+function onSafeClick() {
+    if (gSafeClickCount <= 0) return
+    const elSafe = document.querySelector('.safe span')
+    elSafe.innerText = gSafeClickCount
+    if (gFirstClicked === 0) return
+    // if (gSafeClickCount < 0) return
+    var randIdx = getRandomIntInclusive(0, gEmtyCells.length)
+    var currCell = gEmtyCells[randIdx]
+    console.log(currCell)
+    if (gBoard[currCell.i][currCell.j].isShown) {
+        randIdx = getRandomIntInclusive(0, gEmtyCells.length)
+        currCell = gEmtyCells[randIdx]
+        // console.log(currCell)
+    }
+    gSafeClickCount--
+    elSafe.innerText = gSafeClickCount
+    const elCell = document.querySelector(`.cell-${currCell.i}-${currCell.j}`)
+    elCell.classList.add('safeClick')
+    const i = currCell.i
+    const j = currCell.j
+    setTimeout(safeOff, 1000, i, j)
+    return
+}
+
+function safeOff(i, j) {
+    const elCell = document.querySelector(`.cell-${i}-${j}`)
+    elCell.classList.remove('safeClick')
+}
+
+function getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
 function getRandEmptyCell(board) {
     var allCells = []

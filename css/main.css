@@ -70,6 +70,14 @@ button:hover {
 .smiley {
     background-color: rgb(0, 39, 0);
     border-radius: 10%;
+    margin-bottom: 10px;
+}
+
+.safe{
+    background-color: rgb(4, 152, 4);
+    display: block;
+    margin: auto;
+    text-align: center;
 }
 
 .board-container {
@@ -88,9 +96,10 @@ button:hover {
     height: 1.5em;
 }
 
-.darker {
-    background-color: rgb(1, 48, 1);
+.safeClick{
+    background-color: lightgreen;
 }
+
 
 .wrong {
     background-color: darkred;
@@ -102,8 +111,8 @@ button:hover {
 }
 
 .shown {
-    background-color: lightgreen;
-    border: none;
+    background-color: rgb(54, 200, 54);
+    border: 1px solid white;
 }
 
 .shown:hover {
