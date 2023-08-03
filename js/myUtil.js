@@ -84,27 +84,34 @@ function onDarkMode() {
 }
 
 function onSafeClick() {
+    if (!gGame.isOn) return
     if (gSafeClickCount <= 0) return
     const elSafe = document.querySelector('.safe span')
     elSafe.innerText = gSafeClickCount
     if (gFirstClicked === 0) return
-    // if (gSafeClickCount < 0) return
-    var randIdx = getRandomIntInclusive(0, gEmtyCells.length)
-    var currCell = gEmtyCells[randIdx]
-    console.log(currCell)
-    if (gBoard[currCell.i][currCell.j].isShown) {
-        randIdx = getRandomIntInclusive(0, gEmtyCells.length)
-        currCell = gEmtyCells[randIdx]
-        // console.log(currCell)
+    if (findRandCoverdEmptyCells(gBoard)) {
+        const cellILocation = findRandCoverdEmptyCells(gBoard)
+        gSafeClickCount--
+        elSafe.innerText = gSafeClickCount
+        const i = cellILocation.i
+        const j = cellILocation.j
+        const elCell = document.querySelector(`.cell-${i}-${j}`)
+        elCell.classList.add('safeClick')
+        setTimeout(safeOff, 1000, i, j)
     }
-    gSafeClickCount--
-    elSafe.innerText = gSafeClickCount
-    const elCell = document.querySelector(`.cell-${currCell.i}-${currCell.j}`)
-    elCell.classList.add('safeClick')
-    const i = currCell.i
-    const j = currCell.j
-    setTimeout(safeOff, 1000, i, j)
     return
+}
+
+function findRandCoverdEmptyCells(board) {
+    const coveredEmptyCells = []
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            var currCell = gBoard[i][j]
+            if (!currCell.isShown && !currCell.isMine) coveredEmptyCells.push({ i, j })
+        }
+    }
+    const randIdx = getRandomIntInclusive(0, coveredEmptyCells.length - 1)
+    return coveredEmptyCells[randIdx]
 }
 
 function safeOff(i, j) {
