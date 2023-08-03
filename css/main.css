@@ -67,13 +67,29 @@ button:hover {
     padding: 5px;
 }
 
+.hint {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    border-radius: 50%;
+    margin: auto 2px;
+    padding: 1px;
+}
+
+.hintMode{
+    background-color: yellow;
+}
+
+.hide{
+    display: none;
+}
+
 .smiley {
     background-color: rgb(0, 39, 0);
     border-radius: 10%;
     margin-bottom: 10px;
 }
 
-.safe{
+.safe {
     background-color: rgb(4, 152, 4);
     display: block;
     margin: auto;
@@ -96,7 +112,7 @@ button:hover {
     height: 1.5em;
 }
 
-.safeClick{
+.safeClick {
     background-color: lightgreen;
 }
 

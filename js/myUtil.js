@@ -83,6 +83,23 @@ function onDarkMode() {
     elDM.innerText = MODE
 }
 
+function onHintMode(elBtn) {
+    if (gFirstClicked === 0) return
+    elBtn.classList.toggle('hintMode')
+    isHintMode = !isHintMode
+}
+
+function renderHints() {
+    const elHint = document.querySelector('.hints')
+    elHint.innerHTML = ''
+    const HTMLString = `<button class="hint" onclick="onHintMode(this)">💡</button>`
+    var strHTML = ''
+    for (var i = 0; i < 3; i++) {
+        strHTML += HTMLString
+    }
+    elHint.innerHTML = strHTML
+}
+
 function onSafeClick() {
     if (!gGame.isOn) return
     if (gSafeClickCount <= 0) return

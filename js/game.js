@@ -6,6 +6,7 @@ const EMPTY = ''
 var LIFE = '❤️❤️❤️'
 var SMILEY = '🙂'
 var gSafeClickCount
+var isHintMode = false
 var gBoard
 var gLevel = {
     SIZE: 4,
@@ -37,6 +38,7 @@ function onInit() {
     LIFE = '❤️❤️❤️'
     SMILEY = '🙂'
     gSafeClickCount = 3
+    renderHints()
     onSafeClick()
     renderSmiley()
     renderLifeCount()
@@ -117,6 +119,14 @@ function onCellClicked(elCell, i, j) {
         renderBoard(gBoard)
         // checkVictory()
     }
+    if (isHintMode) {
+        showNegCells(i, j)
+        const elHint = document.querySelector('.hintMode')
+        elHint.classList.remove('hintMode')
+        elHint.classList.add('hide')
+        isHintMode = !isHintMode
+        return
+    }
     if (gBoard[i][j].isMarked) return
     if (gBoard[i][j].isShown) return
     if (gBoard[i][j].isMine) {
@@ -176,6 +186,32 @@ function showAllCells() {
     renderBoard(gBoard)
 }
 
+function showNegCells(i, j) {
+    const coveredNegCells = []
+    for (var rowIdx = i - 1; rowIdx <= i + 1; rowIdx++) {
+        if (rowIdx < 0 || rowIdx >= gBoard.length) continue
+        for (var colIdx = j - 1; colIdx <= j + 1; colIdx++) {
+            if (colIdx < 0 || colIdx >= gBoard[0].length) continue
+            // if (rowIdx === i && colIdx === j) continue
+            if (gBoard[rowIdx][colIdx].isShown) continue
+            gBoard[rowIdx][colIdx].isShown = true
+            coveredNegCells.push({ i: rowIdx, j: colIdx })
+        }
+    }
+    renderBoard(gBoard)
+    // console.log(coveredNegCells)
+    setTimeout(hideNegCells, 1000, coveredNegCells)
+    return coveredNegCells
+}
+
+function hideNegCells(coveredNegCells) {
+    for (var idx = 0; idx < coveredNegCells.length; idx++) {
+        const curCell = coveredNegCells[idx]
+        gBoard[curCell.i][curCell.j].isShown = false
+    }
+    renderBoard(gBoard)
+}
+
 
 function setMinesNegsCount(board) {
     for (var i = 0; i < board.length; i++) {
@@ -203,7 +239,7 @@ function getCellMinesNegsCount(i, j, board) {
 
 function expandShown(board, i, j) {
     const emptyCells = findNegEmptyCells(board, i, j)
-    const extraShownCount = emptyCells.length
+    // const extraShownCount = emptyCells.length
     // gGame.shownCount += extraShownCount
     for (var idx = 0; idx < emptyCells.length; idx++) {
         const emptyCell = emptyCells[idx]
